@@ -33,7 +33,7 @@ var contextCmd = &cobra.Command{
 	if _, err := toml.DecodeFile(utils.GetHomeDirectory() + "/.letme/letme-config", &rawConfig); err != nil {
 		utils.CheckAndReturnError(err)
 	}
-
+	homeDir := utils.GetHomeDirectory()
 	// Iterate over the keys (table names) in the rawCon(fig map
 	context, _ := cmd.Flags().GetString("context")
 	if len(context) > 0 {
@@ -41,7 +41,7 @@ var contextCmd = &cobra.Command{
 		if ok {
 			utils.UpdateContext(context)
 		} else {
-			fmt.Println("letme: context '" + context + "' does not exist in your .letme-config file")
+			fmt.Println("letme: context '" + context + "' does not exist in your "+ homeDir + "/.letme/letme-config file")
 			os.Exit(1)
 		}
 	} else {

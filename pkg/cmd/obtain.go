@@ -258,6 +258,21 @@ within the AWS cli binary.`,
 						}
 					}
 				}
+			} else if len(serialMfa) > 0 && credentialProcess {
+				fmt.Println("credential-process with mfa, request mfa now")
+				fmt.Printf("Enter MFA one time pass code: ")
+						var tokenMfa string
+						fmt.Scanln(&tokenMfa)
+						result, err = svc.AssumeRole(&sts.AssumeRoleInput{
+							RoleArn:         &singleRoleToAssumeArn,
+							RoleSessionName: &sessionName,
+							SerialNumber:    &serialMfa,
+							TokenCode:       &tokenMfa,
+							DurationSeconds: &sessionDuration,
+						})
+						utils.CheckAndReturnError(err)
+						utils.DatabaseFile(args[0], sessionDuration, utils.CredentialsProcessOutput(*result.Credentials.AccessKeyId, *result.Credentials.SecretAccessKey, *result.Credentials.SessionToken, *result.Credentials.Expiration), authMethod)
+			
 			} else if len(serialMfa) > 0 && !credentialProcess {
 				inlineTokenMfa, _ := cmd.Flags().GetString("inline-mfa")
 				if len(inlineTokenMfa) > 0 {

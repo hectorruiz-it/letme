@@ -1,4 +1,8 @@
 Known issues:
+- BUG: when no session_name is provided, --v1 credentials panic! (only when no MFA is used)
+- BUG: if you remove .letme-db and thjen remove a client it fails
+- letme config needs to be sorted
+- add exit status 1 to the error messages
 - --credentials-process with mfa enabled fails if mfa code is not provided through argument --inline-mfa
 TODO:
 - (letme-tests) fix credentials-process requesting credentials even if time specified in session_duration hasnt been completed
